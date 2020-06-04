@@ -15,7 +15,7 @@ class PointsController {
       items
     } = req.body;
   
-    // const trx = await knex.transaction();
+    const trx = await knex.transaction();
     
     const point = {
       image:'fake',
@@ -29,7 +29,7 @@ class PointsController {
     }
 
 
-    const insertedIds = await knex('points').insert(point);
+    const insertedIds = await trx('points').insert(point);
      
     const point_id = insertedIds[0];
   
@@ -40,7 +40,9 @@ class PointsController {
       };
     })
   
-    await knex('points_items').insert(pointItems);
+    await trx('points_items').insert(pointItems);
+
+    await trx.commit();
   
     return res.json({ 
       id: point_id,
@@ -65,6 +67,29 @@ class PointsController {
       items
     });
 
+  }
+
+  async index(req : Request, res : Response){
+    //cidade , uf, items
+    // request body: edição e criação
+    // params: obrigatório
+    // query : filtro, paginação ....
+
+    const { city, uf, items } = req.query;
+
+    const parsedItems = String(items)
+      .split(',')
+      .map(item=> Number(item.trim()));
+
+    const points = await knex('points')
+      .join('points_items', 'points.id', '=', 'points_items.point_id')
+      .whereIn('points_items.item_id', parsedItems)
+      .where('points.city', String(city))
+      .where('points.uf',String(uf))
+      .distinct()
+      .select('points.*');
+
+    return res.json(points);
   }
 
 }
