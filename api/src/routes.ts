@@ -10,6 +10,9 @@ const pointsController = new PointsController();
 routes.get('/items', itemsController.index);
 routes.post('/points', pointsController.store);
 
+routes.get('/points/:id', pointsController.show );
+
+
 // Service Pattern
 // Repository Pattern (Data Mapper)
 
