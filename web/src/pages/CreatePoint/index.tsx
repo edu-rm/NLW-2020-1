@@ -31,12 +31,31 @@ const CreatePoint = () => {
 
   const [items, setItems] = useState<Item[]>([]);
   const [ufs, setUfs] = useState<string[]>([]);
-  const [selectedUf, setSelectedUf] = useState('0');
-  const [selectedCity, setSelectedCity] = useState('0');
-  const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0,0]);
-
   const [cities, setCities] = useState<string[]>([]);
+  const [selectedUf, setSelectedUf] = useState('0');  
+  const [selectedCity, setSelectedCity] = useState('0');
+  const [selectedPosition, setSelectedPosition] = useState<[number, number]>([-15.7217173,-48.0777893]);
+  const [intialPosition, setIntialPosition] = useState<[number, number]>([-15.7217173,-48.0777893]);
+  const [zoom, setZoom] = useState(4);
 
+
+
+  useEffect(()=> {
+    // API do proprio navegador acessada pela variável global navidator.
+
+    navigator.geolocation.getCurrentPosition(position => {
+      const { latitude, longitude } = position.coords;
+      setZoom(13);
+      setSelectedPosition([
+        latitude, 
+        longitude
+      ]);
+      setIntialPosition([
+        latitude, 
+        longitude
+      ]);
+    });
+  }, []);
 
   // [] = uma única vez
   useEffect(() => {
@@ -139,7 +158,7 @@ const CreatePoint = () => {
             <span>Selecione o endereço no mapa</span>
           </legend>
 
-          <Map center={[-27.025425, -50.935877]} zoom={14} onClick={handleMapClick}>
+          <Map center={intialPosition} zoom={zoom} onClick={handleMapClick}>
             <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
