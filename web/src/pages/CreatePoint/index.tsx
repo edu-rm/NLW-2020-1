@@ -3,6 +3,7 @@ import './styles.css';
 import { Link } from 'react-router-dom';
 
 import axios from 'axios';
+import { LeafletMouseEvent } from 'leaflet';
 import logo from '../../assets/logo.svg'
 import { FiArrowLeft } from 'react-icons/fi';
 import { Map, TileLayer, Marker } from 'react-leaflet';
@@ -32,6 +33,7 @@ const CreatePoint = () => {
   const [ufs, setUfs] = useState<string[]>([]);
   const [selectedUf, setSelectedUf] = useState('0');
   const [selectedCity, setSelectedCity] = useState('0');
+  const [selectedPosition, setSelectedPosition] = useState<[number, number]>([0,0]);
 
   const [cities, setCities] = useState<string[]>([]);
 
@@ -74,6 +76,10 @@ const CreatePoint = () => {
 
   function handleSelectedUf(event: ChangeEvent<HTMLSelectElement>) {
     setSelectedUf(event.target.value);
+  }
+
+  function handleMapClick(event : LeafletMouseEvent){
+    setSelectedPosition([event.latlng.lat, event.latlng.lng]);
   }
 
   return (
@@ -133,12 +139,12 @@ const CreatePoint = () => {
             <span>Selecione o endereço no mapa</span>
           </legend>
 
-          <Map center={[-27.025425, -50.935877]} zoom={14}>
+          <Map center={[-27.025425, -50.935877]} zoom={14} onClick={handleMapClick}>
             <TileLayer
               attribution='&amp;copy <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
-            <Marker position={[-27.025425, -50.935877]}/>
+            <Marker position={selectedPosition}/>
           </Map>
 
           <div className="field-group">
