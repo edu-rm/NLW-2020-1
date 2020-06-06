@@ -32,11 +32,17 @@ const CreatePoint = () => {
   const [items, setItems] = useState<Item[]>([]);
   const [ufs, setUfs] = useState<string[]>([]);
   const [cities, setCities] = useState<string[]>([]);
+  const [selectedItems, setSelectedItems] = useState<number[]>([]);
   const [selectedUf, setSelectedUf] = useState('0');  
   const [selectedCity, setSelectedCity] = useState('0');
   const [selectedPosition, setSelectedPosition] = useState<[number, number]>([-15.7217173,-48.0777893]);
   const [intialPosition, setIntialPosition] = useState<[number, number]>([-15.7217173,-48.0777893]);
   const [zoom, setZoom] = useState(4);
+  const [formData, setFormData] = useState({
+    name:'',
+    email:'',
+    whatsapp: '',
+  });
 
 
 
@@ -101,6 +107,32 @@ const CreatePoint = () => {
     setSelectedPosition([event.latlng.lat, event.latlng.lng]);
   }
 
+  function handleInputChange(event : ChangeEvent<HTMLInputElement>){
+    const {name, value } = event.target;
+
+    // [] usar uma variável como nome de propriedade 
+    setFormData({
+      ...formData,
+      [name] : value,
+    });
+  }
+
+  function handleSelectItem(id : number){
+    
+    const isSelected = selectedItems.includes(id);
+
+    if(isSelected) {
+      const filteredItems = selectedItems.filter(item => item !==id );
+      setSelectedItems(filteredItems);
+    }else {
+      setSelectedItems([
+        ...selectedItems,
+        id
+      ]);
+    }
+    
+  }
+
   return (
     <div id="page-create-point">
       <header>
@@ -127,6 +159,7 @@ const CreatePoint = () => {
               type="text"
               name="name"
               id="name"
+              onChange={handleInputChange}
             />
 
           </div>
@@ -138,6 +171,7 @@ const CreatePoint = () => {
                 type="email"
                 name="email"
                 id="email"
+                onChange={handleInputChange}
               />
             </div>
             <div className="field">
@@ -146,6 +180,7 @@ const CreatePoint = () => {
                 type="text"
                 name="whatsapp"
                 id="whatsapp"
+                onChange={handleInputChange}
               />
             </div>
           </div>
@@ -215,7 +250,11 @@ const CreatePoint = () => {
             {/* Quando fazemos uma iteração no react o primeiro 
             deve ter uma propriedade chamada key */}
             {items.map(item =>(
-              <li key={item.title} className="">
+              <li 
+                key={item.title} 
+                onClick={() => handleSelectItem(item.id)}
+                className={selectedItems.includes(item.id) ? 'selected' : ''}
+              >
                 <img src={item.image_url} alt={item.title}/>
                 <span>{item.title}</span>
               </li>
