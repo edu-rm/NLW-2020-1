@@ -1,13 +1,33 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './styles.css';
 import { Link } from 'react-router-dom';
 
 import logo from '../../assets/logo.svg'
 import { FiArrowLeft } from 'react-icons/fi';
 import { Map, TileLayer, Marker } from 'react-leaflet';
+import api from '../../services/api';
+
+// Criaão de estado para um array ou um objeto precisamos
+// manualmente informar o tipo da varivel.
+
+interface Item {
+  id: number;
+  title: string;
+  image_url: string;
+}
 
 
 const CreatePoint = () => {
+
+  const [items, setItems] = useState<Item[]>([]);
+
+  // [] = uma única vez
+  useEffect(() => {
+    api.get('items').then(response => {
+      setItems(response.data);
+    });
+  },[]);
+
   return (
     <div id="page-create-point">
       <header>
@@ -97,30 +117,17 @@ const CreatePoint = () => {
           </legend>
 
           <ul className="items-grid">
-            <li className="selected">
-              <img src="http://localhost:3333/uploads/lampadas.svg" alt="lampada"/>
-              <span>Lâmpadas</span>
-            </li>
-            <li>
-              <img src="http://localhost:3333/uploads/lampadas.svg" alt="lampada"/>
-              <span>Lâmpadas</span>
-            </li>
-            <li>
-              <img src="http://localhost:3333/uploads/lampadas.svg" alt="lampada"/>
-              <span>Lâmpadas</span>
-            </li>
-            <li>
-              <img src="http://localhost:3333/uploads/lampadas.svg" alt="lampada"/>
-              <span>Lâmpadas</span>
-            </li>
-            <li>
-              <img src="http://localhost:3333/uploads/lampadas.svg" alt="lampada"/>
-              <span>Lâmpadas</span>
-            </li>
-            <li>
-              <img src="http://localhost:3333/uploads/lampadas.svg" alt="lampada"/>
-              <span>Lâmpadas</span>
-            </li>
+            {/* Quando fazemos uma iteração no react o primeiro 
+            deve ter uma propriedade chamada key */}
+            {items.map(item =>(
+              <li key={item.title} className="">
+                <img src={item.image_url} alt={item.title}/>
+                <span>{item.title}</span>
+              </li>
+            ))}
+
+            
+
           </ul>
         </fieldset>
 
