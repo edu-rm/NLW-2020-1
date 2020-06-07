@@ -16,3 +16,16 @@ Hoje em dia existe a densidade de pixel diferente
   - O quanto cabe de pixel dentro da tela de um dispositivo
   - Exstem celulares com a mesma resoluções mas com densidades de pixel diferente   
   - 
+
+import { createStackNavigator } from '@react-navigation/stack';
+  - Dentro do react navigation existe diversos tipos de navegação
+  - Stack : navegação em pilha
+    - Chamamos as próximas telas através de botão e as anteriores não deixam de existir
+    - Consegue voltar. 
+  - Por abas
+  - Drawer 
+    - menu da esquerda pra direita
+  
+
+- NavigationContainer 
+  - Define pra nossas rotas como elas devem se comportar
