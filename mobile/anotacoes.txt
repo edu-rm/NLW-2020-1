@@ -1,0 +1,18 @@
+Diferenças entre React Native e ReatJS
+
+CSS -> mobile 
+  - Yoga : converte sintaxe de JS-CSS para estilização do próprio android e ios
+
+Todos os elementos tem por padrão display flex
+
+Não tem herança e nem cascata de estilos
+  - EX: Não tem como estilizar o testo dentro de uma view
+  - Se o elemento precisar ser estilizado tem que add um style nele
+
+StatusBar - translucent 
+ - Deixa ela acima do conteúdo
+
+Hoje em dia existe a densidade de pixel diferente
+  - O quanto cabe de pixel dentro da tela de um dispositivo
+  - Exstem celulares com a mesma resoluções mas com densidades de pixel diferente   
+  - 
