@@ -29,3 +29,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 
 - NavigationContainer 
   - Define pra nossas rotas como elas devem se comportar
+
+- SVG
+  - Svg é um vetor e o component de image do react native não entende svg
+  - expo install react-native-svg
